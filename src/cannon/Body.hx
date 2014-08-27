@@ -1,7 +1,7 @@
 package cannon;
 
 @:native("CANNON.Body")
-extern class Body {
+extern class Body extends EventTarget {
 
 	static var DYNAMIC(default,never) : Int;
 	static var STATIC(default,never) : Int;
