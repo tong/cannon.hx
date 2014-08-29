@@ -5,7 +5,7 @@ extern class Vec3 {
 	var x : Float;
 	var y : Float;
 	var z : Float;
-	function new( x : Float, y : Float, z : Float ) : Void;
+	function new( ?x : Float, ?y : Float, ?z : Float ) : Void;
 	function cross( v : Vec3, ?target : Vec3 ) : Vec3;
 	function set( x : Float, y : Float, z : Float ) : Vec3;
 	function vadd( v : Vec3, ?target : Vec3 ) : Vec3;

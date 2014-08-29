@@ -7,6 +7,7 @@ extern class Body extends EventTarget {
 	static var STATIC(default,never) : Int;
 	static var KINEMATIC(default,never) : Int;
 
+	var id : Int;
 	var type : String;
 	var world : World;
 	//var preStep : World;
