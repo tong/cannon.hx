@@ -1,6 +1,14 @@
 package cannon;
 
 typedef BodyOptions = Dynamic;
+/*
+{
+	@:optional var position : vec3;
+	@:optional var position : vec3;
+	@:optional var position : vec3;
+	@:optional var position : vec3;
+};
+*/
 
 @:native("CANNON.Body")
 extern class Body extends EventTarget {
@@ -12,51 +20,60 @@ extern class Body extends EventTarget {
 	static var SLEEPY(default,null) : Int;
 	static var SLEEPING(default,null) : Int;
 
-	var id : Int;
-	var velocity : Vec3;
-	var angularVelocity : Vec3;
+	//var id : Int;
+	var aabb : AABB;
+	var aabbNeedsUpdate : Bool;
+	var allowSleep : Bool;
 	var angularDamping : Float;
-	var position : Vec3;
-	var quaternion : Quaternion;
+	var angularVelocity : Vec3;
+	var collisionFilterGroup : Int;
+	var collisionFilterMask : Int;
+	var collisionResponse : Bool;
+	var fixedRotation : Bool;
 	var linearDamping : Float;
+	var force : Vec3;
+	var inertia : Vec3;
+	var initAngularVelocity : Vec3;
+	var initPosition : Vec3;
+	var initQuaternion : Quaternion;
+	var initVelocity : Vec3;
+	var invInertia : Vec3;
+	var invInertiaSolve : Vec3;
+	var invInertiaWorld : Mat3;
+	var invInertiaWorldSolve : Mat3;
+	var invMass : Float;
+	var mass : Float;
+	var material : Material;
+	var position : Vec3;
+	var previousPosition : Vec3;
+	var quaternion : Quaternion;
+	var shapeOffsets : Array<Vec3>;
+	var shapeOrientations : Array<Quaternion>;
+	var shapes : Array<Dynamic>;
+	var sleepSpeedLimit : Float;
+	var sleepState : Int;
+	var sleepTimeLimit : Float;
+	var type : Int;
+	var tau : Vec3;
+	var velocity : Vec3;
+	var world : World;
 
 	function new( options : BodyOptions ) : Void;
 
-	function wakeUp() : Void;
-	function sleep() : Void;
-	function sleepTick( time : Float ) : Void;
-	function updateSolveMassProperties() : Void;
-	function pointToLocalFrame( worldPoint : Vec3, ?result : Vec3 ) : Vec3;
-	function pointToWorldFrame( localPoint : Vec3, ?result : Vec3 ) : Vec3;
-	function vectorToWorldFrame( localVector : Vec3, ?result : Vec3 ) : Vec3;
-	function addShape( shape : Shape, ?offset : Vec3, ?orientation : Vec3 ) : Vec3;
-	function updateBoundingRadius() : Void;
-	function computeAABB() : Void;
-	function updateInertiaWorld( force : Dynamic ) : Void;
-	function applyForce( force : Dynamic, worldPoint : Vec3 ) : Void;
-	function applyImpulse( impulse : Dynamic, worldPoint : Vec3 ) : Void;
-	function updateMassProperties() : Void;
-	function getVelocityAtWorldPoint( worldPoint : Vec3, result : Vec3 ) : Vec3;
-	
-
-	/*
-	var tau : Vec3;
-	var quaternion : Quaternion;
-	var initQuaternion : Quaternion;
-	var angularVelocity : Vec3;
-	var initAngularVelocity : Vec3;
-	var shape : Shape;
-	var inertia : Vec3;
-	var inertiaWorld : Vec3;
-	var inertiaWorldAutoUpdate : Bool;
-	var angularDamping : Float;
-	var aabbmin : Vec3;
-	var aabbmax : Vec3;
-	var aabbNeedsUpdate : Bool;
-	var wlambda : Vec3;
-	function new( mass : Float, shape : Shape, ?material : Material ) : Void;
-	function computeAABB() : Void;
 	function applyForce( force : Vec3, worldPoint : Vec3 ) : Void;
 	function applyImpulse( impulse : Vec3, worldPoint : Vec3 ) : Void;
-	*/
+	function computeAABB() : Void;
+	function getVelocityAtWorldPoint( worldPoint : Vec3, result : Vec3 ) : Vec3;
+	function pointToLocalFrame( worldPoint : Vec3, ?result : Vec3 ) : Vec3;
+	function pointToWorldFrame( localPoint : Vec3, ?result : Vec3 ) : Vec3;
+	function sleep() : Void;
+	function sleepTick( time : Float ) : Void;
+	function updateBoundingRadius() : Void;
+	function updateInertiaWorld( force : Dynamic ) : Void;
+	function updateMassProperties() : Void;
+	function updateSolveMassProperties() : Void;
+	function wakeUp() : Void;
+
+	function vectorToWorldFrame( localVector : Vec3, ?result : Vec3 ) : Vec3;
+	function addShape( shape : Shape, ?offset : Vec3, ?orientation : Vec3 ) : Vec3;
 }

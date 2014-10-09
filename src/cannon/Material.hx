@@ -4,6 +4,6 @@ package cannon;
 extern class Material {
 	static var idCounter : Int;
 	var name : String;
-	var id : Int;
+	//var id : Int;
 	function new( ?name : String ) : Void;
 }

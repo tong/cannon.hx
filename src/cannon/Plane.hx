@@ -2,7 +2,7 @@ package cannon;
 
 @:native("CANNON.Plane")
 extern class Plane extends Shape {
-	var type : Int;
+	//var type : Int;
 	var worldNormal : Vec3;
 	var worldNormalNeedsUpdate : Bool;
 	function new() : Void;

@@ -2,31 +2,41 @@ package cannon;
 
 @:native("CANNON.World")
 extern class World {
+
 	var allowSleep : Bool;
-	var contacts : Array<Dynamic>; //TODO
-	var frictionEquations : Array<Dynamic>; //TODO
-	var quatNormalizeSkip : Int;
-	var quatNormalizeFast : Bool;
-	var time : Float;
-	var stepnumber : Float;
-	var last_dt : Float;
-	var nextId : Int;
-	var gravity : Vec3;
+	var bodies : Array<Body>;
 	var broadphase : Broadphase;
-	var bodies : Array<Dynamic>; //TODO
-	var solver : GSSolver;
-	var constraints : Array<Dynamic>; //TODO
-	var contactgen : ContactGenerator;
-	var collisionMatrix : Array<Dynamic>;
-	var materials : Array<Material>;
+	var collisionMatrix : ArrayCollisionMatrix;
+	var collisionMatrixPrevious : ArrayCollisionMatrix;
+	var constraints : Array<Constraint>;
 	var contactmaterials : Array<ContactMaterial>;
-	var mats2cmat : Dynamic;
-	var defaultMaterial : Material;
+	var contactMaterialTable : TupleDictionary;
+	var contacts : Array<ContactEquation>; //TODO
 	var defaultContactMaterial : ContactMaterial;
 	var doProfiling : Bool;
+	var dt : Float;
+	var gravity : Vec3;
+	var materials : Array<Material>;
+	var narrowphase : Narrowphase;
 	var profile : Dynamic;
+	var quatNormalizeFast : Bool;
+	var quatNormalizeSkip : Int;
+	var solver : Solver;
+	var stepnumber : Float;
 	var subsystems : Array<Dynamic>;
+	var time : Float;
+	
+	/*
+	var frictionEquations : Array<Dynamic>; //TODO
+	var last_dt : Float;
+	var nextId : Int;
+	//var contactgen : ContactGenerator;
+	var mats2cmat : Dynamic;
+	var defaultMaterial : Material;
+	*/
+
 	function new() : Void;
+	
 	function getContactMaterial( m1 : Material, m2 : Material ) : ContactMaterial;
 	function numObjects() : Int;
 	function collisionMatrixGet( i : Int, j : Int, current : Dynamic ) : Dynamic;
