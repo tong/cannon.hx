@@ -5,5 +5,5 @@ extern class Material {
 	static var idCounter : Int;
 	var name : String;
 	var id : Int;
-	function new( name : String ) : Void;
+	function new( ?name : String ) : Void;
 }
