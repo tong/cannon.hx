@@ -1,6 +1,13 @@
 package cannon;
 
 @:native("CANNON.Particle")
+extern class Particle extends Shape {
+	function new() : Void;
+	//function calculateLocalInertia() : Void;
+}
+
+/*
+@:native("CANNON.Particle")
 extern class Particle extends Body {
 	var position : Vec3;
 	var initPosition : Vec3;
@@ -25,3 +32,4 @@ extern class Particle extends Body {
 	function sleep() : Void;
 	function sleepTick( time : Float ) : Void;
 }
+*/

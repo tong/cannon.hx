@@ -1,7 +1,7 @@
 package cannon;
 
 @:native("CANNON.Vec3Pool")
-extern class Vec3Pool extends ObjectPool {
+extern class Vec3Pool extends Pool {
 	function new() : Void;
-	function constructObject() : Void;
+	//function constructObject() : Vec3;
 }

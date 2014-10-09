@@ -2,11 +2,13 @@ package cannon;
 
 @:native("CANNON.Vec3")
 extern class Vec3 {
+	static var ZERO : Vec3;
 	var x : Float;
 	var y : Float;
 	var z : Float;
 	function new( ?x : Float, ?y : Float, ?z : Float ) : Void;
 	function cross( v : Vec3, ?target : Vec3 ) : Vec3;
+	function setZero() : Vec3;
 	function set( x : Float, y : Float, z : Float ) : Vec3;
 	function vadd( v : Vec3, ?target : Vec3 ) : Vec3;
 	function vsub( v : Vec3, ?target : Vec3 ) : Vec3;
@@ -22,8 +24,11 @@ extern class Vec3 {
 	function negate( target : Vec3 ) : Vec3;
 	function tangents( t1 : Vec3, t1 : Vec3 ) : Void;
 	function toString() : String;
-	function copy( target : Vec3 ) : Vec3;
+	function toArray() : Array<Float>;
+	function copy( source : Vec3 ) : Vec3;
 	function lerp( v : Vec3, t : Float, target : Vec3 ) : Void;
 	function almostEquals( v : Vec3, precision : Float ) : Bool;
 	function almostZero( precision : Float ) : Bool;
+	function isAntiparallelTo( v : Float, precision : Float ) : Bool;
+	function clone() : Vec3;
 }
