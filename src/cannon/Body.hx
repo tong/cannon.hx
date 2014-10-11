@@ -20,7 +20,7 @@ extern class Body extends EventTarget {
 	static var SLEEPY(default,null) : Int;
 	static var SLEEPING(default,null) : Int;
 
-	//var id : Int;
+	var id : Int;
 	var aabb : AABB;
 	var aabbNeedsUpdate : Bool;
 	var allowSleep : Bool;
@@ -57,6 +57,8 @@ extern class Body extends EventTarget {
 	var tau : Vec3;
 	var velocity : Vec3;
 	var world : World;
+	var preStep : Void->Void;
+	var postStep : Void->Void;
 
 	function new( options : BodyOptions ) : Void;
 

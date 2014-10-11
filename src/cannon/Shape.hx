@@ -11,7 +11,7 @@ package cannon;
 @:native("CANNON.Shape")
 extern class Shape {
 
-	static var types : ShapeType;
+	//static var types : ShapeType;
 
 	var boundingSphereRadius : Float;
 	var collisionResponse : Bool;

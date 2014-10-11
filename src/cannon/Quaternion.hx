@@ -2,6 +2,10 @@ package cannon;
 
 @:native("CANNON.Quaternion")
 extern class Quaternion {
+	var x : Float;
+	var y : Float;
+	var z : Float;
+	var w : Float;
 	function new( ?x : Float, ?y : Float, ?z : Float, ?w : Float ) : Void;
 	function set( x : Float, y : Float, z : Float, w : Float ) : Void;
 	function toString() : String;
