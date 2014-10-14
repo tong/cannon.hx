@@ -19,7 +19,7 @@ class App {
 		world = new cannon.World();
 		world.gravity.set( 0, 0, 0 );
 		world.broadphase = new cannon.NaiveBroadphase();
-		world.solver.iterations = 10;
+		untyped world.solver.iterations = 10;
 
 		var shape = new cannon.Box( new cannon.Vec3( 1, 1, 1 ) );
 		body = new cannon.Body({mass:1});
