@@ -1,0 +1,6 @@
+-cp src
+--no-output
+-js api.js
+-xml cannon.xml
+-D noEmbedJS
+--macro include('cannon')
