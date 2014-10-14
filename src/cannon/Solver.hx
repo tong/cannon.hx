@@ -3,6 +3,7 @@ package cannon;
 @:native("CANNON.Solver")
 extern class Solver {
 	var equations : Array<Equation>;
+	var iterations : Int;
 	function new() : Void;
 	function solve( dt : Float, world : World ) : Float;
 	function addEquation( eq : Equation ) : Void;
