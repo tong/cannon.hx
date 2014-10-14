@@ -7,46 +7,44 @@ class App {
 
 	static var TIMESTEP = 1/60;
 
-	static var camera : PerspectiveCamera;
-	static var scene : Scene;
 	static var renderer : CanvasRenderer;
+	static var scene : Scene;
+	static var camera : PerspectiveCamera;
 	static var mesh : Mesh;
 	static var world : cannon.World;
-	static var body : cannon.RigidBody;
-	static var shape : cannon.Box;
-	static var mass : Float;
+	static var body : cannon.Body;
 
 	static function initCannon() {
 
 		world = new cannon.World();
-		world.gravity.set(0,0,0);
+		world.gravity.set( 0, 0, 0 );
 		world.broadphase = new cannon.NaiveBroadphase();
 		world.solver.iterations = 10;
 
-		shape = new cannon.Box(new cannon.Vec3(1,1,1));
-		mass = 1;
-		body = new cannon.RigidBody(mass,shape);
-		body.angularVelocity.set(0,10,0);
+		var shape = new cannon.Box( new cannon.Vec3( 1, 1, 1 ) );
+		body = new cannon.Body({mass:1});
+		body.addShape( shape );
+		body.angularVelocity.set( 0, 10, 0 );
 		body.angularDamping = 0.5;
-		world.add(body);
+		world.add( body );
 	}
 
 	static function initThree() {
-		
-		scene = new Scene();
-		
-		camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100 );
-		camera.position.z = 5;
-		scene.add( camera );
-
-		var geometry = new BoxGeometry( 2, 2, 2 );
-		var material = new MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
-		mesh = new Mesh( geometry, material );
-		scene.add( mesh );
 
 		renderer = new CanvasRenderer();
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
+
+		scene = new Scene();
+		
+		camera = new PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 1, 100 );
+		camera.position.z = 5;
+		scene.add( camera );
+
+		mesh = new Mesh(
+			new BoxGeometry( 2, 2, 2 ),
+			new MeshBasicMaterial( { color:0xff0000, wireframe:true } ) );
+		scene.add( mesh );
 	}
 
 	static function update() {
@@ -54,8 +52,9 @@ class App {
 		window.requestAnimationFrame( untyped update );
 
 		world.step( TIMESTEP );
-		body.position.copy( untyped mesh.position );
-		body.quaternion.copy( untyped mesh.quaternion );
+
+		mesh.position.copy( cast body.position );
+		mesh.quaternion.copy( cast body.quaternion );
 
 		renderer.render( scene, camera );
 	}
@@ -67,5 +66,4 @@ class App {
 			update();
 		}
 	}
-
 }

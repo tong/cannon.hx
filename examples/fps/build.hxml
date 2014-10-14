@@ -1,5 +1,6 @@
 -js app.js
 -main App
+-cp ../
 -cp ../../src
 -cp ../../../three.hx/src/extern
 -debug

@@ -14,10 +14,10 @@ class App {
 	static var mesh : Mesh;
 
 	static var sphereShape : cannon.Shape;
-	static var sphereBody : cannon.RigidBody;
+	static var sphereBody : cannon.Body;
 	static var world : cannon.World;
 	static var physicsMaterial : cannon.Material;
-	static var boxes = new Array<cannon.RigidBody>();
+	static var boxes = new Array<cannon.Body>();
 	static var boxMeshes = new Array<Mesh>();
 
 	static var controls : PointerLockControls;
@@ -44,29 +44,28 @@ class App {
 		else
 		    world.solver = solver;
 
-		world.gravity.set(0,-20,0);
+		world.gravity.set( 0, -20, 0 );
 		world.broadphase = new cannon.NaiveBroadphase();
 
 		// Create a slippery material (friction coefficient = 0.0)
 		physicsMaterial = new cannon.Material( "slipperyMaterial" );
-		var physicsContactMaterial = new cannon.ContactMaterial( physicsMaterial,
-		                                                         physicsMaterial,
-		                                                         0.0, // friction coefficient
-		                                                         0.3  // restitution
-		);
+		var physicsContactMaterial = new cannon.ContactMaterial( physicsMaterial, physicsMaterial, { friction : 0.0, restitution : 0.3 } );
 		world.addContactMaterial( physicsContactMaterial );
 
 		// Create a sphere
 		var mass = 5, radius = 1.3;
-		sphereShape = new cannon.Sphere(radius);
-		sphereBody = new cannon.RigidBody(mass,sphereShape,physicsMaterial);
+		sphereShape = new cannon.Sphere( radius );
+		//sphereBody = new cannon.RigidBody(mass,sphereShape,physicsMaterial);
+		sphereBody = new cannon.Body({mass:mass});
+		sphereBody.addShape( sphereShape );
 		sphereBody.position.set(0,5,0);
 		sphereBody.linearDamping = 0.9;
-		world.add(sphereBody);
+		world.add( sphereBody );
 
 		// Create a plane
 		var groundShape = new cannon.Plane();
-		var groundBody = new cannon.RigidBody(0,groundShape,physicsMaterial);
+		var groundBody = new cannon.Body({mass:0});
+		groundBody.addShape(groundShape);
 		groundBody.quaternion.setFromAxisAngle(new cannon.Vec3(1,0,0),-Math.PI/2);
 		world.add( groundBody );
 	}
@@ -105,7 +104,6 @@ class App {
 		geometry.applyMatrix( new Matrix4().makeRotationX( - Math.PI / 2 ) );
 
 		material = new MeshLambertMaterial( { color: 0xdddddd } );
-		//ColorUtils.adjustHSV( material.color, 0, 0, 0.9 );
 
 		mesh = new Mesh( geometry, material );
 		mesh.castShadow = true;
@@ -123,26 +121,28 @@ class App {
 		window.addEventListener( 'resize', onWindowResize, false );
 
 		 // Add boxes
-		var halfExtents = new cannon.Vec3(1,1,1);
-		var boxShape = new cannon.Box(halfExtents);
-		var boxGeometry = new BoxGeometry(halfExtents.x*2,halfExtents.y*2,halfExtents.z*2);
+		var halfExtents = new cannon.Vec3( 1, 1, 1 );
+		var boxShape = new cannon.Box( halfExtents );
+		var boxGeometry = new BoxGeometry( halfExtents.x*2, halfExtents.y*2, halfExtents.z*2 );
 		for( i in 0...7 ){
 			var x = (Math.random()-0.5)*20;
 			var y = 1 + (Math.random()-0.5)*1;
 			var z = (Math.random()-0.5)*20;
-			var boxBody = new cannon.RigidBody(5,boxShape);
+			var boxBody = new cannon.Body({mass:5});
+			boxBody.addShape( boxShape );
 			var boxMesh = new Mesh( boxGeometry, material );
-			world.add(boxBody);
-			scene.add(boxMesh);
-			boxBody.position.set(x,y,z);
-			boxMesh.position.set(x,y,z);
+			world.add( boxBody );
+			scene.add( boxMesh );
+			boxBody.position.set( x, y, z );
+			boxMesh.position.set( x, y, z );
 			boxMesh.castShadow = true;
 			boxMesh.receiveShadow = true;
-			boxMesh.useQuaternion = true;
-			boxes.push(boxBody);
-			boxMeshes.push(boxMesh);
+			//boxMesh.useQuaternion = true;
+			boxes.push( boxBody );
+			boxMeshes.push( boxMesh );
 		}
 
+		/*
 		// Add linked boxes
 		var size = 0.5;
 		var he = new cannon.Vec3(size,size,size*0.1);
@@ -176,10 +176,13 @@ class App {
 			}
 			last = boxbody;
 		}
+		*/
 	}
 
 	static function animate() {
+
 		Three.requestAnimationFrame( untyped animate );
+
 		if( controls.enabled ) {
 			world.step( dt );
 			/*
