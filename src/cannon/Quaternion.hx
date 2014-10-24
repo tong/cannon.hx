@@ -19,5 +19,5 @@ extern class Quaternion {
 	function normalizeFast() : Void;
 	function vmult( v : Vec3, ?target : Vec3 ) : Vec3;
 	function copy( target : Quaternion ) : Void;
-	function toEuler( target : Vec3, order : String ) : Void;
+	function toEuler( target : Vec3, ?order : String ) : Void;
 }

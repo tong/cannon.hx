@@ -6,6 +6,9 @@ package cannon;
 	var BOX = 4;
 	var COMPOUND = 8;
 	var CONVEXPOLYHEDRON = 16;
+	var HEIGHTFIELD = 32;
+	var PARTICLE = 64;
+	var CYLINDER = 128;
 }
 
 @:native("CANNON.Shape")

@@ -2,7 +2,7 @@ package cannon;
 
 @:native("CANNON.Vec3")
 extern class Vec3 {
-	static var ZERO : Vec3;
+	static var ZERO(default,null) : Vec3;
 	var x : Float;
 	var y : Float;
 	var z : Float;
