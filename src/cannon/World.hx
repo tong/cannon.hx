@@ -49,5 +49,5 @@ extern class World {
 	function remove( body : Body ) : Void;
 	function addMaterial( m : Material ) : Void;
 	function addContactMaterial( cmat : ContactMaterial ) : Void;
-	function step( dt : Float ) : Void;
+	function step( dt : Float, ?timeSinceLastCalled : Float, ?maxSubSteps : Int ) : Void;
 }
