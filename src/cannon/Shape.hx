@@ -28,7 +28,7 @@ extern class Shape {
 
 	function calculateLocalInertia( mass : Float, target : Vec3 ) : Void;
 	function updateBoundingSphereRadius() : Float;
-	function volume() : Void;
+	function volume() : Float;
 
 	function computeBoundingSphereRadius() : Void;
 	function getBoundingSphereRadius() : Float;
