@@ -13,7 +13,7 @@ extern class Quaternion {
 	function toAxisAngle( targetAxis : Vec3 ) : Array<Dynamic>;
 	function setFromVectors( u : Vec3, v : Vec3 ) : Void;
 	function mult( q : Quaternion, ?target : Quaternion ) : Quaternion;
-	function inverse( target : Quaternion ) : Quaternion;
+	function inverse( ?target : Quaternion ) : Quaternion;
 	function conjugate( target : Quaternion ) : Quaternion;
 	function normalize() : Void;
 	function normalizeFast() : Void;

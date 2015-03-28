@@ -1,7 +1,7 @@
 package cannon;
 
 @:native("CANNON.World")
-extern class World {
+extern class World extends EventTarget {
 
 	var allowSleep : Bool;
 	var bodies : Array<Body>;

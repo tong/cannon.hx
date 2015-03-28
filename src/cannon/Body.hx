@@ -77,5 +77,5 @@ extern class Body extends EventTarget {
 	function wakeUp() : Void;
 
 	function vectorToWorldFrame( localVector : Vec3, ?result : Vec3 ) : Vec3;
-	function addShape( shape : Shape, ?offset : Vec3, ?orientation : Vec3 ) : Vec3;
+	function addShape( shape : Shape, ?offset : Vec3, ?orientation : Quaternion ) : Vec3;
 }
