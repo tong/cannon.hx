@@ -1,27 +1,51 @@
 package cannon;
 
-private typedef ContactMaterialOptions = Dynamic;
-/*
-{
-	friction: 0.3,
-        restitution: 0.3,
-        contactEquationStiffness: 1e7,
-        contactEquationRelaxation: 3,
-        frictionEquationStiffness: 1e7,
-        frictionEquationRelaxation: 3
-}
+/**
+	Defines what happens when two materials meet.
 */
-
 @:native("CANNON.ContactMaterial")
 extern class ContactMaterial {
-	var id : Int;
-	var materials : Array<Material>;
+
+	/**
+		Identifier of this material
+	*/
+	var id : Float;
+
+	/**
+		Participating materials
+	*/
+	var materials : Array<Dynamic>;
+
+	/**
+		Friction coefficient
+	*/
 	var friction : Float;
+
+	/**
+		Restitution coefficient
+	*/
 	var restitution : Float;
+
+	/**
+		Stiffness of the produced contact equations
+	*/
 	var contactEquationStiffness : Float;
+
+	/**
+		Relaxation time of the produced contact equations
+	*/
 	var contactEquationRelaxation : Float;
-	var contactEquationRegularizationTime : Float;
+
+	/**
+		Stiffness of the produced friction equations
+	*/
 	var frictionEquationStiffness : Float;
-	var frictionEquationRegularizationTime : Float;
-	function new( m1 : Material, m2 : Material, options : ContactMaterialOptions ) : Void;
+
+	/**
+		Relaxation time of the produced friction equations
+	*/
+	var frictionEquationRelaxation : Float;
+
+	function new( m1 : Material, m2 : Material, ?options : Dynamic ) : Void;
+
 }

@@ -7,7 +7,7 @@ class App {
 
 	static var TIMESTEP = 1/60;
 
-	static var renderer : CanvasRenderer;
+	static var renderer : WebGLRenderer;
 	static var scene : Scene;
 	static var camera : PerspectiveCamera;
 	static var mesh : Mesh;
@@ -31,7 +31,7 @@ class App {
 
 	static function initThree() {
 
-		renderer = new CanvasRenderer();
+		renderer = new WebGLRenderer();
 		renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( renderer.domElement );
 

@@ -1,18 +1,35 @@
 package cannon;
 
+/**
+	Hinge constraint. Think of it as a door hinge. It tries to keep the door in the correct place and with the correct orientation.
+*/
 @:native("CANNON.HingeConstraint")
-extern class HingeConstraint extends Constraint {
+extern class HingeConstraint extends PointToPointConstraint {
 
-	/*
-	function new( bodyA : Body, pivotA : Vec3, axisA : Vec3, bodyB : RigidBody, pivotB : Vec3, axisB : Vec3, maxForce : Float ) : Void;
-	function getRotationalEquation1() : Equation;
-	function getRotationalEquation2() : Equation;
-	function getPointToPointEquation1() : Equation;
-	function getPointToPointEquation2() : Equation;
-	function getPointToPointEquation3() : Equation;
+	/**
+		Rotation axis, defined locally in bodyA.
 	*/
+	var axisA : Vec3;
+
+	/**
+		Rotation axis, defined locally in bodyB.
+	*/
+	var axisB : Vec3;
+
+	var rotationalEquation1 : RotationalEquation;
+
+	var rotationalEquation2 : RotationalEquation;
+
+	var motorEquation : RotationalMotorEquation;
+
+	function new( bodyA : Body, bodyB : Body, ?options : Dynamic ) : Void;
 
 	function enableMotor() : Void;
+
 	function disableMotor() : Void;
-	//function update() : Void;
+
+	function setMotorSpeed( speed : Float ) : Void;
+
+	function setMotorMaxForce( maxForce : Float ) : Void;
+
 }

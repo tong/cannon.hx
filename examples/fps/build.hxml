@@ -2,6 +2,6 @@
 -main App
 -cp ../
 -cp ../../src
--cp ../../../three.hx/src/extern
+-cp ../../../three.hx/src
 -debug
 -D noEmbedJS

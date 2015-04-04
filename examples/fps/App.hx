@@ -33,8 +33,8 @@ class App {
 
 		var solver = new cannon.GSSolver();
 
-		world.defaultContactMaterial.contactEquationStiffness = 1e9;
-		world.defaultContactMaterial.contactEquationRegularizationTime = 4;
+		untyped world.defaultContactMaterial.contactEquationStiffness = 1e9;
+		untyped world.defaultContactMaterial.contactEquationRegularizationTime = 4;
 
 		solver.iterations = 7;
 		solver.tolerance = 0.1;
@@ -181,7 +181,7 @@ class App {
 
 	static function animate() {
 
-		Three.requestAnimationFrame( untyped animate );
+		window.requestAnimationFrame( untyped animate );
 
 		if( controls.enabled ) {
 			world.step( dt );

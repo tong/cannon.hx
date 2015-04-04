@@ -1,37 +1,53 @@
 package cannon;
 
-@:enum abstract ShapeType(Int) {
-	var SPHERE = 1;
-	var PLANE = 2;
-	var BOX = 4;
-	var COMPOUND = 8;
-	var CONVEXPOLYHEDRON = 16;
-	var HEIGHTFIELD = 32;
-	var PARTICLE = 64;
-	var CYLINDER = 128;
-}
-
+/**
+	Base class for shapes
+*/
 @:native("CANNON.Shape")
 extern class Shape {
 
-	//static var types : ShapeType;
+	/**
+		Identifyer of the Shape.
+	*/
+	var id : Float;
 
+	/**
+		The type of this shape. Must be set to an int > 0 by subclasses.
+	*/
+	var type : Float;
+
+	/**
+		The local bounding sphere radius of this shape.
+	*/
 	var boundingSphereRadius : Float;
-	var collisionResponse : Bool;
-	var type : ShapeType;
 
-	//var aabbmin : Vec3;
-	//var aabbmax : Vec3;
-	//var boundingSphereRadiusNeedsUpdate : Bool;
+	/**
+		Whether to produce contact forces when in contact with other bodies. Note that contacts will be generated, but they will be disabled.
+	*/
+	var collisionResponse : Bool;
+
+	var material : Material;
+
+	/**
+		The available shape types.
+	*/
+	static var types : Dynamic;
 
 	function new() : Void;
 
-	function calculateLocalInertia( mass : Float, target : Vec3 ) : Void;
-	function updateBoundingSphereRadius() : Float;
+	/**
+		Computes the bounding sphere radius. The result is stored in the property .boundingSphereRadius
+	*/
+	//function updateBoundingSphereRadius() : Void;
+
+	/**
+		Get the volume of this shape
+	*/
 	function volume() : Float;
 
-	function computeBoundingSphereRadius() : Void;
-	function getBoundingSphereRadius() : Float;
-	function calculateTransformedInertia( mass : Float, quat : Quaternion, target : Vec3 ) : Void;
-	function calculateLocalAABB() : Void;
+	/**
+		Calculates the inertia in the local frame for this shape.
+	*/
+	//function calculateLocalInertia( mass : Float, target : Vec3 ) : Void;
+
 }
