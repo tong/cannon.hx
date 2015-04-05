@@ -6,6 +6,8 @@ package cannon;
 @:native("CANNON.Body")
 extern class Body extends EventTarget {
 
+	var id : Int;
+	
 	/**
 		Reference to the world the body is living in
 	*/
