@@ -20,7 +20,7 @@ extern class Vec3 {
 
 	static var UNIT_Z : Vec3;
 
-	function new( x : Float, y : Float, z : Float ) : Void;
+	function new( ?x : Float, ?y : Float, ?z : Float ) : Void;
 
 	/**
 		Vector cross product
