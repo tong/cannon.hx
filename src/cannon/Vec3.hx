@@ -40,7 +40,7 @@ extern class Vec3 {
 	/**
 		Vector addition
 	*/
-	function vadd( v : Vec3, target : Vec3 ) : Vec3;
+	function vadd( v : Vec3, ?target : Vec3 ) : Vec3;
 
 	/**
 		Vector subtraction
