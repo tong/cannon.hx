@@ -1,0 +1,6 @@
+data/
+examples/*/*.map
+examples/*/*.js
+*.n
+haxedoc.xml
+_*
