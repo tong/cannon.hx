@@ -12,9 +12,7 @@ extern class RigidVehicle {
 
 	var constraints : Array<Dynamic>;
 
-	var wheelBodies : Array<Dynamic>;
-
-	function new( ?options : Dynamic ) : Void;
+	function new( ?chassisBody : Body ) : Void;
 
 	/**
 		Add a wheel

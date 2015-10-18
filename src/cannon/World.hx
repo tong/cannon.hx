@@ -160,7 +160,8 @@ extern class World extends EventTarget {
 
 There are two modes. The simple mode is fixed timestepping without interpolation. In this case you only use the first argument. The second case uses interpolation. In that you also provide the time since the function was last used, as well as the maximum fixed timesteps to take.
 	*/
-	function step( dt : Float, ?timeSinceLastCalled : Float, ?maxSubSteps : Float ) : Void;
+	@:overload(function(dt:Float):Void{})
+	function step( dt : Float, timeSinceLastCalled : Float, maxSubSteps : Float ) : Void;
 
 	/**
 		Step the simulation

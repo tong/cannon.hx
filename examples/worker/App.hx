@@ -33,7 +33,7 @@ class App {
 
 		scene = new Scene();
 		scene.fog = new Fog( 0x000000, 500, 10000 );
-		
+
 		camera = new PerspectiveCamera( 30, window.innerWidth/window.innerHeight, 0.5, 10000 );
 		camera.position.set( Math.cos( Math.PI/5 ) * 30, 5, Math.sin( Math.PI/5 ) * 30);
 		scene.add( camera );
@@ -53,6 +53,7 @@ class App {
 		var light = new DirectionalLight( 0xffffff, 1.75 );
 		var d = 20;
 		light.position.set( d, d, d );
+		//TODO
 		light.castShadow = true;
  		//light.shadowCameraVisible = true;
  		light.shadowMapWidth = light.shadowMapHeight = 1024;
@@ -72,7 +73,7 @@ class App {
 		mesh.castShadow = true;
 		mesh.receiveShadow = true;
 		scene.add( mesh );
-		
+
 		meshes = new Array();
 		var cubeGeo = new BoxGeometry( 1, 1, 1, 10, 10 );
 		var cubeMaterial = new MeshPhongMaterial( { color: 0x888888 } );
@@ -88,14 +89,14 @@ class App {
 		renderer.setClearColor( scene.fog.color );
 		renderer.gammaInput = true;
 		renderer.gammaOutput = true;
-		renderer.shadowMapEnabled = true;
+		renderer.shadowMap.enabled = true;
 		document.body.appendChild( renderer.domElement );
 
 		window.addEventListener( 'resize', onWindowResize, false );
 	}
 
-	static function update() {
-		window.requestAnimationFrame( untyped update );
+	static function update( time : Float ) {
+		window.requestAnimationFrame( update );
 		controls.update();
 		renderer.render( scene, camera );
 	}
@@ -143,7 +144,8 @@ class App {
 			App.worker = worker;
 
 			init();
-			update();
+			//update();
+			window.requestAnimationFrame( update );
 
 			// Start the worker!
 			sendDataToWorker();

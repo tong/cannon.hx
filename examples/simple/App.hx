@@ -36,7 +36,7 @@ class App {
 		document.body.appendChild( renderer.domElement );
 
 		scene = new Scene();
-		
+
 		camera = new PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 1, 100 );
 		camera.position.z = 5;
 		scene.add( camera );
@@ -47,9 +47,9 @@ class App {
 		scene.add( mesh );
 	}
 
-	static function update() {
+	static function update( ?time : Float ) {
 
-		window.requestAnimationFrame( untyped update );
+		window.requestAnimationFrame( update );
 
 		world.step( TIMESTEP );
 

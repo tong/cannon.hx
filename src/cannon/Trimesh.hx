@@ -98,7 +98,7 @@ extern class Trimesh extends Shape {
 	*/
 	function getNormal( i : Float, target : Vec3 ) : Vec3;
 
-	override function calculateLocalInertia( mass : Float, target : Vec3 ) : Vec3;
+	function calculateLocalInertia( mass : Float, target : Vec3 ) : Vec3;
 
 	/**
 		Compute the local AABB for the trimesh

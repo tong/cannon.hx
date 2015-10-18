@@ -11,17 +11,17 @@ extern class EventTarget {
 	/**
 		Add an event listener
 	*/
-	function addEventListener( type : String, listener : Dynamic->Void ) : EventTarget;
+	function addEventListener( type : String, listener : Void->Void ) : EventTarget;
 
 	/**
 		Check if an event listener is added
 	*/
-	function hasEventListener( type : String, listener : Dynamic->Void ) : Bool;
+	function hasEventListener( type : String, listener : Void->Void ) : Bool;
 
 	/**
 		Remove an event listener
 	*/
-	function removeEventListener( type : String, listener : Dynamic->Void ) : EventTarget;
+	function removeEventListener( type : String, listener : Void->Void ) : EventTarget;
 
 	/**
 		Emit an event.

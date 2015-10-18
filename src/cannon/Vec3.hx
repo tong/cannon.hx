@@ -20,7 +20,7 @@ extern class Vec3 {
 
 	static var UNIT_Z : Vec3;
 
-	function new( ?x : Float, ?y : Float, ?z : Float ) : Void;
+	function new( x : Float, y : Float, z : Float ) : Void;
 
 	/**
 		Vector cross product
@@ -40,7 +40,7 @@ extern class Vec3 {
 	/**
 		Vector addition
 	*/
-	function vadd( v : Vec3, ?target : Vec3 ) : Vec3;
+	function vadd( v : Vec3, target : Vec3 ) : Vec3;
 
 	/**
 		Vector subtraction

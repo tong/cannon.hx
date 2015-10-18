@@ -11,6 +11,6 @@ extern class ConeEquation extends Equation {
 	*/
 	var angle : Float;
 
-	function new( bodyA : Body, bodyB : Body, ?options.axisA : Vec3, ?options.axisB : Vec3, ?options.angle : Vec3, ?options.maxForce : Float ) : Void;
+	function new( bodyA : Body, bodyB : Body, ?options : Dynamic ) : Void;
 
 }

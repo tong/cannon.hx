@@ -38,7 +38,7 @@ extern class Shape {
 	/**
 		Computes the bounding sphere radius. The result is stored in the property .boundingSphereRadius
 	*/
-	//function updateBoundingSphereRadius() : Void;
+	function updateBoundingSphereRadius() : Void;
 
 	/**
 		Get the volume of this shape

@@ -14,7 +14,7 @@ extern class SAPBroadphase extends Broadphase {
 	/**
 		The world to search in.
 	*/
-	var world : World;
+	//var world : World;
 
 	/**
 		Axis to sort the bodies along. Set to 0 for x axis, and 1 for y axis. For best performance, choose an axis that the bodies are spread out more on.

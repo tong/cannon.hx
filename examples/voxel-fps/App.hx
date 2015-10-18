@@ -8,20 +8,23 @@ class App {
 	static var camera : PerspectiveCamera;
 	static var scene : Scene;
 	static var renderer : WebGLRenderer;
-
 	static var geometry : Geometry;
 	static var material : MeshLambertMaterial;
 	static var mesh : Mesh;
+	static var boxMeshes : Array<Mesh>;
 
-	static var sphereShape : cannon.Shape;
-	static var sphereBody : cannon.Body;
 	static var world : cannon.World;
+	static var sphereShape : cannon.Sphere;
+	static var sphereBody : cannon.Body;
 	static var physicsMaterial : cannon.Material;
-	static var boxes = new Array<cannon.Body>();
-	static var boxMeshes = new Array<Mesh>();
+	static var voxels : VoxelLandscape;
+	static var groundBody : cannon.Body;
 
 	static var controls : PointerLockControls;
 	static var time = Date.now().getTime();
+
+	static var balls : Array<cannon.Body>;
+	static var ballMeshes : Array<Mesh>;
 
 	static var dt = 1/60;
 
@@ -33,8 +36,8 @@ class App {
 
 		var solver = new cannon.GSSolver();
 
-		untyped world.defaultContactMaterial.contactEquationStiffness = 1e9;
-		untyped world.defaultContactMaterial.contactEquationRegularizationTime = 4;
+		world.defaultContactMaterial.contactEquationStiffness = 1e9;
+		world.defaultContactMaterial.contactEquationRelaxation = 4;
 
 		solver.iterations = 7;
 		solver.tolerance = 0.1;
@@ -49,25 +52,48 @@ class App {
 
 		// Create a slippery material (friction coefficient = 0.0)
 		physicsMaterial = new cannon.Material( "slipperyMaterial" );
-		var physicsContactMaterial = new cannon.ContactMaterial( physicsMaterial, physicsMaterial, { friction : 0.0, restitution : 0.3 } );
+		var physicsContactMaterial = new cannon.ContactMaterial( physicsMaterial, physicsMaterial, {friction:0.0, restitution:0.3} );
 		world.addContactMaterial( physicsContactMaterial );
+
+
+		var nx = 50,
+			ny = 8,
+			nz = 50,
+			sx = 0.5,
+			sy = 0.5,
+			sz = 0.5;
 
 		// Create a sphere
 		var mass = 5, radius = 1.3;
 		sphereShape = new cannon.Sphere( radius );
-		//sphereBody = new cannon.RigidBody(mass,sphereShape,physicsMaterial);
-		sphereBody = new cannon.Body({mass:mass});
+		sphereBody = new cannon.Body({mass:mass,material:physicsMaterial});
 		sphereBody.addShape( sphereShape );
-		sphereBody.position.set(0,5,0);
+		sphereBody.position.set( nx*sx*0.5, ny*sy+radius*2, nz*sz*0.5);
 		sphereBody.linearDamping = 0.9;
 		world.add( sphereBody );
 
 		// Create a plane
 		var groundShape = new cannon.Plane();
-		var groundBody = new cannon.Body({mass:0});
+		groundBody = new cannon.Body({mass:0,material:physicsMaterial});
 		groundBody.addShape(groundShape);
 		groundBody.quaternion.setFromAxisAngle(new cannon.Vec3(1,0,0),-Math.PI/2);
+		groundBody.position.set(0,0,0);
 		world.add( groundBody );
+
+		voxels = new VoxelLandscape( world, nx, ny, nz, sx, sy, sz );
+		for( i in 0...nx ) {
+			for( j in 0...ny ) {
+				for( k in 0...nz ) {
+					var filled = true;
+					if( Math.sin(i*0.1)*Math.sin(k*0.1) < j/ny*2-1 )
+						filled = false;
+					voxels.setFilled(i,j,k,filled);
+				}
+			}
+		}
+		voxels.update();
+
+		trace( voxels.boxes.length+" voxel physics bodies" );
 	}
 
 	static function init() {
@@ -83,18 +109,16 @@ class App {
 		var light = new SpotLight( 0xffffff );
 		light.position.set( 10, 30, 20 );
 		light.target.position.set( 0, 0, 0 );
-		if( true ){
-		    light.castShadow = true;
-		    light.shadowCameraNear = 20;
-		    light.shadowCameraFar = 50;//camera.far;
-		    light.shadowCameraFov = 40;
-		    light.shadowBias = 0.1;
-		    //light.shadowMapDarkness = 0.7;
-		    light.shadowMapWidth = 2*512;
-		    light.shadowMapHeight = 2*512;
-		    //light.shadowCameraVisible = true;
-		}
+		light.castShadow = true;
+		light.shadowCameraNear = 20;
+		light.shadowCameraFar = 50;//camera.far;
+		light.shadowCameraFov = 40;
+		light.shadowBias = 0.1;
+		light.shadowDarkness = 0.7;
+		light.shadowMapWidth = 2*512;
+		light.shadowMapHeight = 2*512;
 		scene.add( light );
+		//scene.add( new three.CameraHelper( camera ) );
 
 		controls = new PointerLockControls( camera, sphereBody );
 		scene.add( controls.getObject() );
@@ -105,97 +129,54 @@ class App {
 
 		material = new MeshLambertMaterial( { color: 0xdddddd } );
 
+		boxMeshes = new Array();
+
 		mesh = new Mesh( geometry, material );
-		mesh.castShadow = true;
-		mesh.receiveShadow = true;
+		mesh.position.copy( cast groundBody.position );
+		//TODO
+		//mesh.castShadow = true;
+		//mesh.receiveShadow = true;
 		scene.add( mesh );
+
+		for( i in 0...voxels.boxes.length ) {
+			var b = voxels.boxes[i];
+			var voxelGeometry = new BoxGeometry( voxels.sx*b.nx, voxels.sy*b.ny, voxels.sz*b.nz );
+			var voxelMesh = new Mesh( voxelGeometry, material );
+			voxelMesh.castShadow = true;
+			voxelMesh.receiveShadow = true;
+			scene.add( voxelMesh );
+			boxMeshes.push( voxelMesh );
+		}
 
 		renderer = new WebGLRenderer();
 		renderer.shadowMap.enabled = true;
-		//renderer.shadowMapSoft = true;
+        //renderer.shadowMapSoft = true;
 		renderer.setSize( window.innerWidth, window.innerHeight );
-		renderer.setClearColor( untyped scene.fog.color, 1 );
-
+		renderer.setClearColor( scene.fog.color, 1 );
 		document.body.appendChild( renderer.domElement );
 
 		window.addEventListener( 'resize', onWindowResize, false );
-
-		 // Add boxes
-		var halfExtents = new cannon.Vec3( 1, 1, 1 );
-		var boxShape = new cannon.Box( halfExtents );
-		var boxGeometry = new BoxGeometry( halfExtents.x*2, halfExtents.y*2, halfExtents.z*2 );
-		for( i in 0...7 ){
-			var x = (Math.random()-0.5)*20;
-			var y = 1 + (Math.random()-0.5)*1;
-			var z = (Math.random()-0.5)*20;
-			var boxBody = new cannon.Body({mass:5});
-			boxBody.addShape( boxShape );
-			var boxMesh = new Mesh( boxGeometry, material );
-			world.add( boxBody );
-			scene.add( boxMesh );
-			boxBody.position.set( x, y, z );
-			boxMesh.position.set( x, y, z );
-			boxMesh.castShadow = true;
-			boxMesh.receiveShadow = true;
-			//boxMesh.useQuaternion = true;
-			boxes.push( boxBody );
-			boxMeshes.push( boxMesh );
-		}
-
-		/*
-		// Add linked boxes
-		var size = 0.5;
-		var he = new cannon.Vec3(size,size,size*0.1);
-		var boxShape = new cannon.Box(he);
-		var mass = 0.0;
-		var space = 0.1*size;
-		var N=5;
-		var last : cannon.RigidBody = null;
-		var boxGeometry = new BoxGeometry(he.x*2,he.y*2,he.z*2);
-		for( i in 0...N ){
-			var boxbody = new cannon.RigidBody(mass,boxShape);
-			var boxMesh = new Mesh( boxGeometry, material );
-			boxbody.position.set(5,(N-i)*(size*2+2*space) + size*2+space,0);
-			boxbody.linearDamping=0.01;
-			boxbody.angularDamping=0.01;
-			boxMesh.useQuaternion = true;
-			boxMesh.castShadow = true;
-			boxMesh.receiveShadow = true;
-			world.add(boxbody);
-			scene.add(boxMesh);
-			boxes.push(boxbody);
-			boxMeshes.push(boxMesh);
-			if(i!=0){
-			    // Connect this body to the last one
-			    var c1 = new cannon.PointToPointConstraint(boxbody,new cannon.Vec3(-size,size+space,0),last,new cannon.Vec3(-size,-size-space,0));
-			    var c2 = new cannon.PointToPointConstraint(boxbody,new cannon.Vec3(size,size+space,0),last,new cannon.Vec3(size,-size-space,0));
-			    world.addConstraint(c1);
-			    world.addConstraint(c2);
-			} else {
-			    mass=0.3;
-			}
-			last = boxbody;
-		}
-		*/
 	}
 
-	static function animate() {
+	static function animate( ?_time : Float ) {
 
-		window.requestAnimationFrame( untyped animate );
+		window.requestAnimationFrame( animate );
 
 		if( controls.enabled ) {
+
 			world.step( dt );
-			/*
+
 			for( i in 0...balls.length ) {
-				balls[i].position.copy(ballMeshes[i].position);
-				balls[i].quaternion.copy(ballMeshes[i].quaternion);
+				ballMeshes[i].position.copy( untyped balls[i].position);
+                ballMeshes[i].quaternion.copy( untyped balls[i].quaternion);
 			}
-			*/
-			for( i in 0...boxes.length ) {
-				boxes[i].position.copy( untyped boxMeshes[i].position );
-				boxes[i].quaternion.copy( untyped boxMeshes[i].quaternion );
+
+			for( i in 0...voxels.boxes.length ) {
+				boxMeshes[i].position.copy( untyped voxels.boxes[i].position );
+				boxMeshes[i].quaternion.copy( untyped voxels.boxes[i].quaternion );
 			}
 		}
+
 		controls.update( Date.now().getTime() - time );
 		renderer.render( scene, camera );
 		time = Date.now().getTime();
@@ -252,9 +233,55 @@ class App {
 				instructions.innerHTML = 'Your browser doesn\'t seem to support Pointer Lock API';
 			}
 
+			balls = [];
+			ballMeshes = [];
+
+			var ballShape = new cannon.Sphere(0.2);
+			var ballGeometry = new SphereGeometry( ballShape.radius );
+			var shootDirection = new Vector3();
+            var shootVelo = 15;
+
+			function getShootDir( targetVec : Vector3 ) {
+				var vector = targetVec;
+		        targetVec.set(0,0,1);
+				vector.unproject( camera );
+		        var ray = new three.Ray( untyped sphereBody.position, vector.sub( untyped sphereBody.position ).normalize() );
+		        targetVec.x = ray.direction.x;
+		        targetVec.y = ray.direction.y;
+		        targetVec.z = ray.direction.z;
+		    }
+
+			window.addEventListener( "click", function(e){
+				if( controls.enabled ) {
+					var x = sphereBody.position.x;
+					var y = sphereBody.position.y;
+					var z = sphereBody.position.z;
+					var ballBody = new cannon.Body({ mass: 1 });
+					ballBody.addShape(ballShape);
+					var ballMesh = new Mesh( ballGeometry, material );
+					world.add(ballBody);
+					scene.add(ballMesh);
+					ballMesh.castShadow = true;
+					ballMesh.receiveShadow = true;
+					balls.push(ballBody);
+					ballMeshes.push(ballMesh);
+					getShootDir(shootDirection);
+					ballBody.velocity.set(  shootDirection.x * shootVelo,
+											shootDirection.y * shootVelo,
+											shootDirection.z * shootVelo);
+					// Move the ball outside the player sphere
+					x += shootDirection.x * (sphereShape.radius*1.02 + ballShape.radius);
+					y += shootDirection.y * (sphereShape.radius*1.02 + ballShape.radius);
+					z += shootDirection.z * (sphereShape.radius*1.02 + ballShape.radius);
+					ballBody.position.set(x,y,z);
+					ballMesh.position.set(x,y,z);
+				}
+			});
+
 			initCannon();
 			init();
 			animate();
+
 		}
 	}
 

@@ -46,7 +46,7 @@ extern class ConvexPolyhedron extends Shape {
 	/**
 		Get face normal given 3 vertices
 	*/
-	//static function getFaceNormal( va : Vec3, vb : Vec3, vc : Vec3, target : Vec3 ) : Void;
+//	static function getFaceNormal( va : Vec3, vb : Vec3, vc : Vec3, target : Vec3 ) : Void;
 
 	/**
 		Compute the normal of a face from its vertices
@@ -84,7 +84,7 @@ extern class ConvexPolyhedron extends Shape {
 	*/
 	function computeWorldFaceNormals( quat : Quaternion ) : Void;
 
-	function updateBoundingSphereRadius() : Void;
+	override function updateBoundingSphereRadius() : Void;
 
 	function calculateWorldAABB( pos : Vec3, quat : Quaternion, min : Vec3, max : Vec3 ) : Void;
 

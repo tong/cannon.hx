@@ -3,4 +3,6 @@
 -cp ../../src
 -cp ../../../three.hx/src
 -debug
+-dce full
 -D noEmbedJS
+-D analyzer

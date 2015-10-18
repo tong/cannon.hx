@@ -1,4 +1,4 @@
 
-CANNON.HX
-=========
-Haxe/Javascript type definitions for cannon.js (0.6.1) | https://github.com/schteppe/cannon.js
+# Cannon.hx
+
+Haxe/Javascript type definitions for [cannon.js](https://github.com/schteppe/cannon.js)

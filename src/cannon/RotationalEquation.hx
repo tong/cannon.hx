@@ -6,6 +6,6 @@ package cannon;
 @:native("CANNON.RotationalEquation")
 extern class RotationalEquation extends Equation {
 
-	function new( bodyA : Body, bodyB : Body, ?options.axisA : Vec3, ?options.axisB : Vec3, ?options.maxForce : Float ) : Void;
+	function new( bodyA : Body, bodyB : Body, ?options : Float ) : Void;
 
 }

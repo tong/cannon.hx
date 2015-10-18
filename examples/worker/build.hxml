@@ -1,6 +1,8 @@
 -js app.js
 -main App
 -cp ../../src
--cp ../../../three.hx/src/extern
+-cp ../../../three.hx/src
 -debug
+-dce full
 -D noEmbedJS
+#-D analyzer
