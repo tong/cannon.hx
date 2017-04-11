@@ -1,0 +1,14 @@
+{
+    "name": "cannon.hx",
+    "version": "0.0.0",
+    "description": "Physics engine",
+    "tags": ["physics","js"],
+    "url": "https://github.com/tong/cannon.hx",
+    "targets": [],
+    "license": "MIT",
+    "contributors": ["tong"],
+    "releasenote": "See CHANGELOG",
+    "classPath" : "src/",
+    "dependencies": {
+    }
+}
