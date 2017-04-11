@@ -193,7 +193,7 @@ extern class Body extends EventTarget {
 	/**
 		Add a shape to the body with a local offset and orientation.
 	*/
-	function addShape( shape : Shape, _offset : Vec3, _orientation : Quaternion ) : Body;
+	function addShape( shape : Shape, ?_offset : Vec3, ?_orientation : Quaternion ) : Body;
 
 	/**
 		Update the bounding radius of the body. Should be done if any of the shapes are changed.

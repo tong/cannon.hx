@@ -1,9 +1,9 @@
 -js app.js
 -main App
+-lib three.hx
+-lib cannon.hx
 -cp ../
--cp ../../src
--cp ../../../three.hx/src
+#-cp ../../src
 -debug
 -dce full
 -D noEmbedJS
--D analyzer

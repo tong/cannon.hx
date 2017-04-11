@@ -1,7 +1,7 @@
 -js app.js
 -main App
--cp ../../src
--cp ../../../three.hx/src
+-lib cannon.hx
+-lib three.hx
 -debug
 -dce full
 -D noEmbedJS

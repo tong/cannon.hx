@@ -4,7 +4,7 @@ import js.Browser.window;
 import js.html.Blob;
 import js.html.Float32Array;
 import js.html.Worker;
-import three.*;
+import three.Three;
 import three.controls.TrackballControls;
 import haxe.Timer;
 
@@ -76,7 +76,7 @@ class App {
 
 		meshes = new Array();
 		var cubeGeo = new BoxGeometry( 1, 1, 1, 10, 10 );
-		var cubeMaterial = new MeshPhongMaterial( { color: 0x888888 } );
+		var cubeMaterial = new MeshPhongMaterial( { color: new Color(0x888888) } );
 		for( i in 0...N ) {
 			var cubeMesh = new Mesh( cubeGeo, cubeMaterial );
 			cubeMesh.castShadow = true;
@@ -106,7 +106,7 @@ class App {
 		worker.postMessage(
 			{
 				N:N, dt:DELTA,
-				cannonUrl : document.location.href + "../../res/cannon.min.js",
+				cannonUrl : document.location.href + "../../res/script/cannon.min.js",
 				positions:positions,
 				quaternions:quaternions
 			},

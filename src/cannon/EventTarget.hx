@@ -11,7 +11,7 @@ extern class EventTarget {
 	/**
 		Add an event listener
 	*/
-	function addEventListener( type : String, listener : Void->Void ) : EventTarget;
+	function addEventListener<T>( type : String, listener : T->Void ) : EventTarget;
 
 	/**
 		Check if an event listener is added

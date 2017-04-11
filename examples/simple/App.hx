@@ -1,7 +1,7 @@
 
 import js.Browser.document;
 import js.Browser.window;
-import three.*;
+import three.Three;
 
 class App {
 
@@ -43,7 +43,8 @@ class App {
 
 		mesh = new Mesh(
 			new BoxGeometry( 2, 2, 2 ),
-			new MeshBasicMaterial( { color:0xff0000, wireframe:true } ) );
+			new MeshBasicMaterial( { color: new Color(0xff0000), wireframe: true } )
+		);
 		scene.add( mesh );
 	}
 

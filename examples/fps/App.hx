@@ -1,7 +1,7 @@
 
 import js.Browser.document;
 import js.Browser.window;
-import three.*;
+import three.Three;
 
 class App {
 
@@ -77,7 +77,7 @@ class App {
 		scene = new Scene();
 		scene.fog = new Fog( 0x000000, 0, 500 );
 
-		var ambient = new AmbientLight( 0x111111 );
+		var ambient = new AmbientLight( 0x111111, 1 );
 		scene.add( ambient );
 
 		var light = new SpotLight( 0xffffff );
